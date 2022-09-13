@@ -1,0 +1,154 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-family: 'Lobster', cursive;
+    background-color: #2d414b;
+}
+
+.options {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    gap: 20px;
+    padding-top: 20px;
+}
+
+.player-container {
+    display: none;
+    align-content: center;
+    justify-content: center;
+    margin: 15px;
+}
+
+#player1, #player2 {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+}
+
+.btn-select {
+    background-color: #F2C14B;
+    border: 2px solid #BD9942;
+    border: none;
+    color: black;
+    padding: 8px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 10%;
+    cursor: pointer;
+    display: flex;
+}
+
+.btn-select:hover, #play-btn:hover {
+    background-color: black;
+    color: white;
+}
+
+h1 {
+    font-size: 42px;
+    padding-top: 30px;
+    width: 100vw;
+    display:flex;
+    justify-content: center;
+    color: #F2C14B;
+}
+
+label {
+    color: #F2C14B;
+    padding-right: 8px;
+    font-size: 20px;
+}
+
+input[type="text"] {
+    width: 150px;
+    height: 24px;
+}
+
+.player-win {
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+    padding-top: 20px;
+    font-size: 18px;
+    color: #BD9942;
+    display: none;
+}
+
+.grid-container {
+    display: none;
+    grid-template-columns: repeat(3, auto);
+    padding: 70px;   
+}
+
+.grid-cell {
+    border: 1px solid #F2C14B;
+    width: 100px;
+    height: 100px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 36px;
+    background-color: #2d414b;
+}
+
+.grid-cell:nth-child(-n + 3) {
+    border-top: none;
+} 
+
+.grid-cell:nth-child(3n) {
+    border-right: none;
+}
+
+
+.grid-cell:nth-child(3n  - 2) {
+    border-left: none;
+} 
+
+
+.grid-cell:nth-child(n + 7) {
+    border-bottom: none;
+}
+
+
+.x::after {
+    content: 'X';
+    color: #F2C14B;
+}
+
+.o::after {
+    content: 'O';
+    color: #F2C14B;
+}
+
+.disabled {
+    cursor: not-allowed;
+}
+
+.grid-cell:not(.disabled):hover {
+    background: #eee;
+}
+
+#reset, #play-btn {
+  background-color: #F2C14B;
+  border: none;
+  color: black;
+  padding: 8px 16px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  border-radius: 10%;
+  cursor: pointer;
+  display: none;
+}
