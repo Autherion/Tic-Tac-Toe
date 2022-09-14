@@ -58,7 +58,7 @@ const Gameboard = (() => {
     let player1 = Player()
     let player2 = Player()
 
-    function minimax (board, depth, isMaximizing) {
+    const minimax = (board, depth, isMaximizing) => {
         if (boardMoves.checkWin(gameArr, winCombinations, aiPlayer)){
             return 10 - depth;
         }
@@ -94,7 +94,7 @@ const Gameboard = (() => {
         }
     }
 
-    function bestMove() {
+    const bestMove = () => {
         // AI to make its turn
         let bestScore = -Infinity;
         let move;
@@ -110,27 +110,29 @@ const Gameboard = (() => {
                     }
                 }
             }
-            console.log(move)
             return move
         }
-
-    const controlBoard = () => cells.forEach(cell => cell.addEventListener("click", () => {
-        if (gameArr[cell.dataset.value] == "" && check == false){
-            gameArr[cell.dataset.value] = boardMoves.getTurn() % 2 == 0 ? "o" : "x"
-            boardMoves.addTurn()
-            
-            for (let i = 0; i < gameArr.length; i++) {
-                if (gameArr[i] != "") {
-                    cells[i].classList.add(gameArr[i])
-                }
+    
+    //adds the css classes to the grids if not empty
+    const addClasses = (cell, array) => {
+        for (let i = 0; i < array.length; i++) {
+            if (array[i] != "") {
+                cell[i].classList.add(array[i])
             }
+        }
+    }
 
-        if (boardMoves.checkWin(gameArr, winCombinations, "o")) {
+    const checkWinState = (aiCheck) => {
+        if (boardMoves.checkWin(gameArr, winCombinations, humanPlayer)) {
             winMessage.innerHTML = player1.getName() + " wins!"
             winMessage.style.display = "flex"
             check = true
-        } else if (boardMoves.checkWin(gameArr, winCombinations, "x")) {
-            winMessage.innerHTML = player2.getName() + " wins!"
+        } else if (boardMoves.checkWin(gameArr, winCombinations, aiPlayer)) {
+            if (aiCheck) {
+                winMessage.innerHTML = "The computer wins!"
+            } else {
+                winMessage.innerHTML = player2.getName() + " wins!"
+            }         
             winMessage.style.display = "flex"
             check = true
         } else if (boardMoves.checkTie(gameArr)) {
@@ -139,37 +141,24 @@ const Gameboard = (() => {
             check = true
             }
         }
-    }))
+        
+    const controlBoard = () => cells.forEach(cell => cell.addEventListener("click", () => {
+        if (gameArr[cell.dataset.value] == "" && check == false){
+            gameArr[cell.dataset.value] = boardMoves.getTurn() % 2 == 0 ? "o" : "x"
+            boardMoves.addTurn()
+            addClasses(cells, gameArr)
+            checkWinState(false)       
+        }}))
 
     const boardAI = () => cells.forEach(cell => cell.addEventListener("click", () => {
         if (gameArr[cell.dataset.value] == "" && check == false){
-            gameArr[cell.dataset.value] = "o"
-            boardMoves.addTurn()           
-            
-                let optimalMove = bestMove()       
-                gameArr[optimalMove] = "x"
-
-            for (let i = 0; i < gameArr.length; i++) {
-                if (gameArr[i] != "") {
-                    cells[i].classList.add(gameArr[i])
-                }
-            }
-
-            if (boardMoves.checkWin(gameArr, winCombinations, "o")) {
-                winMessage.innerHTML = player1.getName() + " wins!"
-                winMessage.style.display = "flex"
-                check = true
-            } else if (boardMoves.checkWin(gameArr, winCombinations, "x")) {
-                winMessage.innerHTML = "The computer wins!"
-                winMessage.style.display = "flex"
-                check = true
-            } else if (boardMoves.checkTie(gameArr)) {
-                winMessage.innerHTML = "Tie!"
-                winMessage.style.display = "flex"
-                check = true
-                }
-            }
-    }))
+            gameArr[cell.dataset.value] = humanPlayer
+            boardMoves.addTurn()                   
+            let optimalMove = bestMove()       
+            gameArr[optimalMove] = aiPlayer
+            addClasses(cells, gameArr)       
+            checkWinState(true)
+        }}))
 
     const playerAI = document.querySelector("#ai-player")
     const playButton = document.querySelector("#play-btn")
